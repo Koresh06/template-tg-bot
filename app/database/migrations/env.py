@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from app.config_loader import load_config
-from app.database.base import Base
+from app.database.models.base import Base
 from app.database.session import create_engine_db
 
 
