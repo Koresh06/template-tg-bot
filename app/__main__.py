@@ -7,7 +7,7 @@ from aiogram.enums import ParseMode
 from app.config_loader import load_config
 from app.database.session import create_engine_db, create_sessionmaker
 from app.middlewares.db_session import DbSessionMiddleware
-from app.handlers.users import users
+from app.handlers.users import router
 
 
 logger = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ async def main():
     dp: Dispatcher = Dispatcher()
     dp.update.middleware(DbSessionMiddleware(sessionmaker=sessionmaker))
     dp.include_routers(
-        users
+        router
     )
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
@@ -41,6 +41,5 @@ async def main():
 if __name__ == '__main__':
     try:
         asyncio.run(main())
-        logger.info('Запуск бота')
     except KeyboardInterrupt as exxit:
-        logger.info(f'Бот закрыт {exxit}')
+        logger.info(f'Бот закрыт: {exxit}')
