@@ -13,6 +13,13 @@ class UserRepo(BaseRepo):
         username: str,
     ):
         user = User(tg_id=tg_id, username=username)
-        await self.session.add(user)
+        self.session.add(user)
 
         return True
+
+    async def check_user(self, tg_id: int) -> Optional[User]:
+        user = await self.session.scalar(select(User).where(User.tg_id == tg_id))
+        
+        if not user:
+            return True
+        return False

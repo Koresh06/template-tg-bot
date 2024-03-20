@@ -5,6 +5,8 @@ from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.database.repo.requests import RequestsRepo
+
 
 class DbSessionMiddleware(BaseMiddleware):
     def __init__(self,sessionmaker: async_sessionmaker[AsyncSession]) -> None:
@@ -18,6 +20,8 @@ class DbSessionMiddleware(BaseMiddleware):
         data: dict[str, Any]
     ) -> Any:
         async with self.sessionmaker() as session:
+            repo = RequestsRepo(session)
+            data["repo"] = repo
             data["session"] = session
             result = await handler(event, data)
         return result
